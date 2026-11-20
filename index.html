@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexus Pro — Elite Wireless Controller</title>
+  <meta name="description" content="Nexus Pro. Hall-Effect zero-drift gimbals, 1000Hz wireless polling, adaptive triggers and 38 precision-machined components. Built for every frame.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,700&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css?v=46.0">
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <!-- ======================================================
+       BESPOKE NEXUS VECTOR ARROW CURSOR
+       ====================================================== -->
+  <div class="nexus-cursor" id="nexus-cursor" aria-hidden="true">
+    <!-- Smooth trailing ambient aura / companion halo -->
+    <div class="cursor-halo" id="cursor-halo"></div>
+
+    <!-- Primary precision arrow pointer (tip anchored exactly at mouse position) -->
+    <div class="cursor-arrow-wrap" id="cursor-arrow-wrap">
+      <svg class="cursor-svg" viewBox="0 0 28 32" width="22" height="26" fill="none">
+        <defs>
+          <filter id="nexus-cursor-shadow" x="-30%" y="-30%" width="160%" height="160%">
+            <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="rgba(0,0,0,0.85)" />
+            <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="rgba(255,107,26,0.4)" />
+          </filter>
+          <linearGradient id="nexus-cursor-body" x1="0" y1="0" x2="22" y2="28" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#1e1814" />
+            <stop offset="100%" stop-color="#0a0807" />
+          </linearGradient>
+          <linearGradient id="nexus-cursor-stroke" x1="0" y1="0" x2="22" y2="28" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#ff7a2b" />
+            <stop offset="45%" stop-color="#ffffff" />
+            <stop offset="100%" stop-color="#8a8075" />
+          </linearGradient>
+        </defs>
+        <!-- Sculpted precision cursor arrow -->
+        <path class="cursor-arrow-path"
+              d="M 1.5 1.5 L 1.5 23 L 6.8 18.2 L 11.8 28.5 L 15.8 26.5 L 10.9 16.5 L 18.5 16.5 Z"
+              fill="url(#nexus-cursor-body)"
+              stroke="url(#nexus-cursor-stroke)"
+              stroke-width="1.6"
+              stroke-linejoin="round"
+              stroke-linecap="round"
+              filter="url(#nexus-cursor-shadow)" />
+        <!-- Orange precision core pip -->
+        <circle class="cursor-accent-pip" cx="6.8" cy="9.5" r="1.6" fill="#ff6b1a" />
+      </svg>
+
+      <!-- Sleek interactive action badge pill -->
+      <span class="cursor-badge" id="cursor-badge"></span>
+    </div>
+  </div>
+
+  <!-- ======================================================
+       FROSTED GLASS NOTCH NAVBAR
+       ====================================================== -->
+  <header class="notch-header" id="navbar">
+    <nav class="notch-nav" id="notch-nav">
+      <!-- High-performance frosted glass backdrop blur -->
+      <div class="notch-blur-bg" id="notch-blur-bg" aria-hidden="true"></div>
+
+      <svg class="notch-svg-bg" id="notch-svg" width="700" height="64" viewBox="0 0 700 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <clipPath id="notch-clip">
+            <path id="notch-clip-path" d="M 0 0 C 11.05 0, 20 8.95, 20 20 L 20 44 C 20 55.05, 28.95 64, 40 64 L 660 64 C 671.05 64, 680 55.05, 680 44 L 680 20 C 680 8.95, 688.95 0, 700 0 Z"/>
+          </clipPath>
+        </defs>
+        <path id="notch-fill-path" d="M 0 0 C 11.05 0, 20 8.95, 20 20 L 20 44 C 20 55.05, 28.95 64, 40 64 L 660 64 C 671.05 64, 680 55.05, 680 44 L 680 20 C 680 8.95, 688.95 0, 700 0 Z" fill="rgba(22, 19, 17, 0.18)"/>
+        <path id="notch-stroke-path" d="M 0 0 C 11.05 0, 20 8.95, 20 20 L 20 44 C 20 55.05, 28.95 64, 40 64 L 660 64 C 671.05 64, 680 55.05, 680 44 L 680 20 C 680 8.95, 688.95 0, 700 0" stroke="rgba(245, 240, 233, 0.15)" stroke-width="1"/>
+      </svg>
+
+      <div class="notch-content">
+        <a href="#hero" class="brand-group" aria-label="Nexus home">
+          <div class="brand-gloss-icon">
+            <div class="icon-inner-glow"></div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M6 11h4m-2-2v4m7-2h.01m3 0h.01M6 17l2-8a4 4 0 0 1 4-4h0a4 4 0 0 1 4 4l2 8a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-1.5l-.5-1.5a1 1 0 0 0-1-.7h-3a1 1 0 0 0-1 .7L8 19a2 2 0 0 1-2 1.5H5a2 2 0 0 1-2-2z" stroke="rgba(11,9,8,0.92)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span class="brand-label">NEXUS</span>
+        </a>
+
+        <ul class="nav-links-list">
+          <li><a href="#overview" class="link-item" data-section="overview">Overview</a></li>
+          <li><a href="#features" class="link-item" data-section="features">Features</a></li>
+          <li><a href="#anatomy" class="link-item" data-section="anatomy">Anatomy</a></li>
+          <li><a href="#specs" class="link-item" data-section="specs">Hardware</a></li>
+          <li><a href="#platform" class="link-item" data-section="platform">Platform</a></li>
+          <li><a href="#faq" class="link-item" data-section="faq">FAQ</a></li>
+        </ul>
+
+        <div class="action-wrapper">
+          <a href="#buy" class="glass-pill-download" id="download-btn">
+            <span>Pre-Order</span>
+            <svg width="9" height="11" viewBox="0 0 10 13" fill="none" aria-hidden="true">
+              <path d="M3.45 1.05 2.11 2.35c-.18.17-.18.45 0 .63l2.41 2.34c.09.09.03.25-.11.25H1.01A.45.45 0 0 0 .56 6v1.85c0 .24.2.44.45.44h3.4c.14 0 .2.16.11.25L2.11 10.9c-.18.17-.18.45 0 .62l1.34 1.31c.18.17.47.17.64 0l5.71-5.57a.45.45 0 0 0 0-.63L4.09 1.05a.46.46 0 0 0-.64 0Z" fill="currentColor"/>
+            </svg>
+          </a>
+          <button class="nav-menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav-menu" aria-label="Open navigation menu">
+            <span></span><span></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="mobile-nav-menu" id="mobile-nav-menu" aria-hidden="true">
+        <a href="#overview" class="mobile-nav-link" data-section="overview">Overview</a>
+        <a href="#features" class="mobile-nav-link" data-section="features">Features</a>
+        <a href="#anatomy" class="mobile-nav-link" data-section="anatomy">Anatomy</a>
+        <a href="#specs" class="mobile-nav-link" data-section="specs">Hardware</a>
+        <a href="#platform" class="mobile-nav-link" data-section="platform">Platform</a>
+        <a href="#faq" class="mobile-nav-link" data-section="faq">FAQ</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ======================================================
+       CINEMATIC LETTER-REVEAL PRELOADER
+       ====================================================== -->
+  <div class="loader app-loader" id="loader" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+    <div class="loader-lens-ambient" aria-hidden="true"></div>
+
+    <div class="loader-reveal-container">
+      <!-- Staggered Title Letters -->
+      <div class="loader-reveal-title" aria-label="Nexus Pro">
+        <span class="rv-char" style="--ci: 0">N</span>
+        <span class="rv-char" style="--ci: 1">E</span>
+        <span class="rv-char" style="--ci: 2">X</span>
+        <span class="rv-char" style="--ci: 3">U</span>
+        <span class="rv-char" style="--ci: 4">S</span>
+        <span class="rv-space"></span>
+        <span class="rv-char rv-char--accent" style="--ci: 5">P</span>
+        <span class="rv-char rv-char--accent" style="--ci: 6">R</span>
+        <span class="rv-char rv-char--accent" style="--ci: 7">O</span>
+      </div>
+
+      <!-- Minimal Subtitle Line -->
+      <div class="loader-reveal-meta">
+        <span class="rv-meta-dot"></span>
+        <span class="rv-meta-text">HALL-EFFECT ZERO-DRIFT CONTROLLER</span>
+      </div>
+
+      <!-- Ultra-Clean Hairline Progress Bar -->
+      <div class="loader-hairline-track">
+        <div class="loader-hairline-fill" id="loader-bar-fill"></div>
+      </div>
+
+      <!-- Tabular Counter Indicator -->
+      <div class="loader-reveal-counter">
+        <span id="loader-big-num">00</span><small>%</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================
+       WARM EMBER & CYBERNETIC ATMOSPHERE (fixed behind 3D canvas)
+       ====================================================== -->
+  <div class="hero-warm-field" id="hero-warm-field" aria-hidden="true">
+    <div class="hero-ember-mass"></div>
+    <div class="hero-cream-flare"></div>
+    <div class="hero-accent-orb hero-accent-orb--1"></div>
+    <div class="hero-accent-orb hero-accent-orb--2"></div>
+    <div class="hero-grid-matrix"></div>
+    <div class="hero-fine-scanlines"></div>
+    <div class="hero-field-vignette"></div>
+  </div>
+
+  <!-- ======================================================
+       PERSISTENT 3D CANVAS (Rendered by Three.js)
+       ====================================================== -->
+  <div id="canvas-container"></div>
+
+  <!-- ======================================================
+       SCROLL PROGRESS RAIL
+       ====================================================== -->
+  <aside class="scroll-rail" id="scroll-rail" aria-hidden="true">
+    <span class="rail-number" id="rail-number">01</span>
+    <span class="rail-track"><span class="rail-thumb" id="rail-thumb"></span></span>
+    <span class="rail-label" id="rail-label">Hero</span>
+  </aside>
+
+  <main class="site-main" id="site">
+
+    <!-- ====================================================
+         SECTION 01 — HERO
+         ==================================================== -->
+    <section class="section section--hero" id="hero">
+
+      <div class="hero-frame">
+        <div class="hero-content" id="hero-top-block">
+          <div class="hero-eyebrow">
+            <span class="hero-eyebrow-text">00 / INTRO</span>
+            <span class="hero-eyebrow-tag">NEXUS PRO</span>
+          </div>
+
+          <h1 class="hero-title">
+            <span class="hero-title-line"><span>Precision made</span></span>
+            <span class="hero-title-line"><span>unbeatable<span class="hero-title-dot">.</span></span></span>
+          </h1>
+
+          <p class="hero-sub">
+            Electromagnetic Hall-effect gimbals with zero drift, microswitch hair triggers, and native 1000 Hz wireless polling. Engineered for competitive esports.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#buy" class="hero-action-link">
+              <span>Pre-order — $179</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+            </a>
+            <a href="#overview" class="hero-action-link">
+              <span>Hardware Specs</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-foot" id="hero-bottom-block">
+          <div class="hero-foot-left">
+            <a href="#overview" class="hero-scroll-link">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <polyline points="19 12 12 19 5 12"></polyline>
+              </svg>
+              <span>Scroll to explore</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         SECTION 02 — OVERVIEW / HARDWARE ARCHITECTURE
+         ==================================================== -->
+    <section class="section section--overview" id="overview">
+
+      <div class="overview-frame">
+        <!-- Top Left: Section Index & Japanese/Red Accent -->
+        <div class="overview-top">
+          <div class="overview-index-tag reveal">
+            <span class="overview-dot"></span>
+            <span class="overview-index-text">01 / ARCHITECTURE</span>
+            <span class="overview-index-accent">構造</span>
+          </div>
+
+          <!-- Massive Editorial Statement Heading -->
+          <h2 class="overview-statement reveal" style="--i: 1">
+            We build esports controllers that turn microsecond inputs into pure mechanical dominance.
+          </h2>
+        </div>
+
+        <!-- Bottom Right: Complementary Subtext & Approach Link -->
+        <div class="overview-bottom">
+          <div class="overview-detail-col reveal" style="--i: 2">
+            <p class="overview-detail-copy">
+              From magnetic contactless Hall gimbals to tactile mechanical switches and custom-tuned thumbstick tension, we refine every millimeter for competitive control.
+            </p>
+
+            <a href="#features" class="overview-action-link">
+              <span>Performance Vision</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         SECTION 03 — VISION / MARQUEE TICKER
+         ==================================================== -->
+    <section class="section section--vision" id="features">
+
+      <div class="vision-frame">
+        <!-- Top Left: Section Index & Japanese/Red Accent -->
+        <div class="vision-top">
+          <div class="vision-index-tag reveal">
+            <span class="vision-dot"></span>
+            <span class="vision-index-text">02 / VISION</span>
+            <span class="vision-index-accent">想像</span>
+          </div>
+        </div>
+
+        <!-- Center: Cinematic Continuous Kinetic Marquee -->
+        <div class="vision-marquee-wrap" aria-hidden="true">
+          <div class="vision-marquee-track">
+            <div class="vision-marquee-group">
+              <span class="v-word">造形</span>
+              <span class="v-plus">+</span>
+              <span class="v-word v-en">EVOLVE</span>
+              <span class="v-word">進化</span>
+              <span class="v-plus">+</span>
+              <span class="v-word v-en">CREATE</span>
+              <span class="v-word">想像</span>
+              <span class="v-plus">+</span>
+              <span class="v-word v-en">SHIFT</span>
+              <span class="v-plus">+</span>
+            </div>
+            <div class="vision-marquee-group" aria-hidden="true">
+              <span class="v-word">造形</span>
+              <span class="v-plus">+</span>
+              <span class="v-word v-en">EVOLVE</span>
+              <span class="v-word">進化</span>
+              <span class="v-plus">+</span>
+              <span class="v-word v-en">CREATE</span>
+              <span class="v-word">想像</span>
+              <span class="v-plus">+</span>
+              <span class="v-word v-en">SHIFT</span>
+              <span class="v-plus">+</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Left: Editorial Motto -->
+        <div class="vision-bottom">
+          <div class="vision-motto reveal" style="--i: 2">
+            <span class="vision-motto-mark">+</span>
+            <span class="vision-motto-text">A THOUGHT BECOMES A WORLD.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         SECTION 04 — ANATOMY (STICKY / EXPLODED VIEW)
+         ==================================================== -->
+    <section class="section section--anatomy" id="anatomy">
+      <div class="anatomy-sticky">
+        <div class="anatomy-head">
+          <p class="section-label">( 03 — ANATOMY )</p>
+          <h2 class="section-title">38 parts.<br>One purpose.</h2>
+        </div>
+
+        <ol class="anatomy-notes" id="anatomy-notes">
+          <li class="anatomy-note anatomy-note--left" data-step="0">
+            <span class="note-index">01</span>
+            <div class="note-body">
+              <h3>Hall-effect core</h3>
+              <p>Contactless magnetic gimbals, sealed against dust and rated for 5 million cycles.</p>
+            </div>
+          </li>
+          <li class="anatomy-note anatomy-note--right" data-step="1">
+            <span class="note-index">02</span>
+            <div class="note-body">
+              <h3>Adaptive trigger</h3>
+              <p>Independent tension motors and a 0.1 mm resolution travel sensor in each trigger.</p>
+            </div>
+          </li>
+          <li class="anatomy-note anatomy-note--left" data-step="2">
+            <span class="note-index">03</span>
+            <div class="note-body">
+              <h3>Hybrid D-pad</h3>
+              <p>Four independent switches under a single machined cap. Clean diagonals, no pivot slop.</p>
+            </div>
+          </li>
+          <li class="anatomy-note anatomy-note--right" data-step="3">
+            <span class="note-index">04</span>
+            <div class="note-body">
+              <h3>Grip & cell</h3>
+              <p>Textured TPE shells around a 40-hour cell, serviceable with a single screw.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         SECTION 04 — HARDWARE ARCHITECTURE / CLOSER LOOK (BENTO TILES)
+         ==================================================== -->
+    <section class="section section--approach" id="specs">
+      <div class="approach-container">
+
+        <!-- Header Row -->
+        <div class="approach-header">
+          <div class="approach-title-col">
+            <div class="approach-index-tag reveal">
+              <span class="approach-dot"></span>
+              <span class="approach-index-text">03 / HARDWARE RIG</span>
+              <span class="approach-index-accent">仕様</span>
+            </div>
+            <h2 class="approach-heading reveal" style="--i: 1">
+              A closer look.
+            </h2>
+          </div>
+          <div class="approach-sub-col reveal" style="--i: 2">
+            <p class="approach-subtext">
+              Precision engineering. From<br>magnetic sensors to<br>chassis ergonomics.
+            </p>
+          </div>
+        </div>
+
+        <!-- 6-Tile ReactVibe-Inspired Bento Grid -->
+        <div class="approach-bento-grid">
+
+          <!-- Tile 1: Top-Left Hero Converge / AI Multi-Model Routing Component -->
+          <div class="bento-tile bento-tile--converge reveal" style="--i: 2">
+            <div class="bento-tile-top">
+              <span class="bento-kicker">HYPERLINK / ZERO-LATENCY INPUT BUS</span>
+              <div class="vibe-badge">
+                <span class="vibe-badge-dot"></span>
+                <span>ACTIVE POLLING</span>
+              </div>
+            </div>
+
+            <!-- ReactVibe Converge Stream Animation -->
+            <div class="converge-stage" aria-hidden="true">
+              <svg viewBox="0 0 540 180" class="converge-svg" fill="none">
+                <defs>
+                  <!-- Path Gradients -->
+                  <linearGradient id="vibePath1" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#ff3b30" stop-opacity="0.2" />
+                    <stop offset="50%" stop-color="#ff6b1a" stop-opacity="0.8" />
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.9" />
+                  </linearGradient>
+                  <linearGradient id="vibePillGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#ff3b30" />
+                    <stop offset="100%" stop-color="#ffffff" />
+                  </linearGradient>
+                </defs>
+
+                <!-- Source Channels (Top, Middle, Bottom) -->
+                <path d="M 40 40 C 180 40, 260 90, 420 90" stroke="rgba(255,255,255,0.12)" stroke-width="2" stroke-dasharray="4 4"/>
+                <path d="M 40 90 L 420 90" stroke="rgba(255,255,255,0.18)" stroke-width="2"/>
+                <path d="M 40 140 C 180 140, 260 90, 420 90" stroke="rgba(255,255,255,0.12)" stroke-width="2" stroke-dasharray="4 4"/>
+
+                <!-- Active Converging Glow Paths with Particles -->
+                <path d="M 40 40 C 180 40, 260 90, 420 90" stroke="url(#vibePath1)" stroke-width="2.5" class="converge-flow-path cp-1"/>
+                <path d="M 40 90 L 420 90" stroke="url(#vibePath1)" stroke-width="2.5" class="converge-flow-path cp-2"/>
+                <path d="M 40 140 C 180 140, 260 90, 420 90" stroke="url(#vibePath1)" stroke-width="2.5" class="converge-flow-path cp-3"/>
+
+                <!-- Input Nodes -->
+                <g class="vibe-node vn-1">
+                  <circle cx="40" cy="40" r="14" fill="#140604" stroke="#ff3b30" stroke-width="1.5"/>
+                  <circle cx="40" cy="40" r="5" fill="#ff6b1a"/>
+                  <text x="65" y="44" fill="rgba(255,255,255,0.7)" font-family="var(--font-mono)" font-size="10" letter-spacing="1">HALL GIMBALS</text>
+                </g>
+                <g class="vibe-node vn-2">
+                  <circle cx="40" cy="90" r="14" fill="#140604" stroke="#ff6b1a" stroke-width="1.5"/>
+                  <circle cx="40" cy="90" r="5" fill="#ffffff"/>
+                  <text x="65" y="94" fill="rgba(255,255,255,0.7)" font-family="var(--font-mono)" font-size="10" letter-spacing="1">HAIR TRIGGERS</text>
+                </g>
+                <g class="vibe-node vn-3">
+                  <circle cx="40" cy="140" r="14" fill="#140604" stroke="#ff3b30" stroke-width="1.5"/>
+                  <circle cx="40" cy="140" r="5" fill="#ff6b1a"/>
+                  <text x="65" y="144" fill="rgba(255,255,255,0.7)" font-family="var(--font-mono)" font-size="10" letter-spacing="1">REAR PADDLES</text>
+                </g>
+
+                <!-- Central Converged Destination Node -->
+                <g class="vibe-dest-node">
+                  <circle cx="420" cy="90" r="28" fill="#180402" stroke="#ff3b30" stroke-width="2" class="dest-pulse-ring"/>
+                  <circle cx="420" cy="90" r="18" fill="#ff3b30" class="dest-core"/>
+                  <circle cx="420" cy="90" r="8" fill="#ffffff"/>
+                  <text x="460" y="94" fill="#ffffff" font-family="var(--font-mono)" font-size="11" font-weight="600" letter-spacing="1">0.12 MS</text>
+                </g>
+              </svg>
+            </div>
+
+            <div class="bento-tile-bottom">
+              <p class="bento-desc">Direct DMA hardware bus aggregating all 38 inputs with zero-latency synchronization directly to the console or PC.</p>
+            </div>
+          </div>
+
+          <!-- Tile 2: Tall Right Network Pulse / Infrastructure State Component -->
+          <div class="bento-tile bento-tile--pulse reveal" style="--i: 3">
+            <div class="bento-tile-top">
+              <span class="bento-kicker bicker--light">NETWORK PULSE / REALTIME TELEMETRY</span>
+              <span class="bento-code">99.99%</span>
+            </div>
+
+            <!-- ReactVibe Network Pulse Orbit Topology -->
+            <div class="pulse-orbit-stage" aria-hidden="true">
+              <div class="pulse-center-core">
+                <div class="core-sonar-ring r-1"></div>
+                <div class="core-sonar-ring r-2"></div>
+                <div class="core-sonar-ring r-3"></div>
+                <div class="core-hub-jewel">
+                  <span class="hub-live-dot"></span>
+                </div>
+              </div>
+
+              <!-- Orbiting Satellites with SVG connection lines -->
+              <div class="pulse-satellite sat-1">
+                <span class="sat-pill">US-EAST</span>
+                <span class="sat-val">12ms</span>
+              </div>
+              <div class="pulse-satellite sat-2">
+                <span class="sat-pill">EU-CENTRAL</span>
+                <span class="sat-val">24ms</span>
+              </div>
+              <div class="pulse-satellite sat-3">
+                <span class="sat-pill">AP-TOKYO</span>
+                <span class="sat-val">48ms</span>
+              </div>
+            </div>
+
+            <div class="bento-tile-bottom bento-tile-bottom--overlay">
+              <h3 class="bento-caption">Global edge synchrony.</h3>
+              <p class="bento-desc bento-desc--sub">Continuous telemetry pulses monitor node routing health in real-time.</p>
+            </div>
+          </div>
+
+          <!-- Tile 3: Square Orbit Border / High-Precision Metric Card -->
+          <div class="bento-tile bento-tile--orbit reveal" style="--i: 3">
+            <div class="orbit-glow-border" aria-hidden="true"></div>
+            <div class="bento-tile-top">
+              <span class="bento-kicker">ORBIT BORDER / SPEC ACCURACY</span>
+            </div>
+            <div class="bento-white-body">
+              <span class="bento-big-num" style="color: #ffffff;">99.4<small style="font-size:0.45em; color: var(--accent-orange);">%</small></span>
+              <div class="bento-target-concentric" aria-hidden="true">
+                <span class="target-box t-box-3" style="border-color: rgba(255,107,26,0.35);"></span>
+                <span class="target-box t-box-2" style="border-color: rgba(255,107,26,0.65);"></span>
+                <span class="target-box t-box-1" style="border-color: #ff3b30;">
+                  <span class="target-cross" style="color: #ff3b30;">+</span>
+                </span>
+              </div>
+            </div>
+            <div class="bento-tile-bottom">
+              <p class="bento-desc">Hardware-enforced telemetry tolerances tested under 1,000 continuous hours.</p>
+            </div>
+          </div>
+
+          <!-- Tile 4: Square Signal / Live Audio Spectrum Waveform Tile -->
+          <div class="bento-tile bento-tile--dark-go reveal" style="--i: 4">
+            <div class="bento-tile-top">
+              <span class="bento-kicker">SIGNAL / DYNAMIC FREQUENCY</span>
+            </div>
+            <div class="bento-go-body">
+              <span class="bento-go-text">1000<small style="font-size:0.35em; color: rgba(255,255,255,0.5); display:block; letter-spacing: 0.1em;">HZ</small></span>
+              <!-- ReactVibe Equalizer Pulse Visualizer -->
+              <div class="bento-waveform" aria-hidden="true">
+                <span class="wave-bar wb-1"></span>
+                <span class="wave-bar wb-2"></span>
+                <span class="wave-bar wb-3"></span>
+                <span class="wave-bar wb-4"></span>
+                <span class="wave-bar wb-5"></span>
+                <span class="wave-bar wb-6"></span>
+                <span class="wave-bar wb-7"></span>
+                <span class="wave-bar wb-8"></span>
+                <span class="wave-bar wb-9"></span>
+              </div>
+            </div>
+            <div class="bento-tile-bottom">
+              <p class="bento-desc">Raw 1ms report cycles uninterrupted by OS thread interruptions or buffering.</p>
+            </div>
+          </div>
+
+          <!-- Tile 5: Bottom Left Glass Torus / Material Exploration Tile -->
+          <div class="bento-tile bento-tile--material reveal" style="--i: 4">
+            <div class="bento-tile-top">
+              <span class="bento-kicker">THREE.JS / CAUSTIC GLASS GEOMETRY</span>
+            </div>
+            <div class="bento-material-visual" aria-hidden="true">
+              <!-- Geometric Glass Crystal Sculpture -->
+              <svg viewBox="0 0 240 240" class="glass-crystal-svg" fill="none">
+                <defs>
+                  <radialGradient id="crystalGlowRed" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#ff3b20" stop-opacity="0.9"/>
+                    <stop offset="45%" stop-color="#b81806" stop-opacity="0.6"/>
+                    <stop offset="100%" stop-color="#2a0502" stop-opacity="0"/>
+                  </radialGradient>
+                  <linearGradient id="crystalShine1" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#ffb185" stop-opacity="0.95"/>
+                    <stop offset="50%" stop-color="#e62e15" stop-opacity="0.85"/>
+                    <stop offset="100%" stop-color="#3d0702" stop-opacity="0.95"/>
+                  </linearGradient>
+                  <linearGradient id="crystalShine2" x1="100%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#ffc7b0" stop-opacity="0.95"/>
+                    <stop offset="55%" stop-color="#cc2408" stop-opacity="0.85"/>
+                    <stop offset="100%" stop-color="#140201" stop-opacity="0.98"/>
+                  </linearGradient>
+                </defs>
+                <circle cx="120" cy="120" r="90" fill="url(#crystalGlowRed)"/>
+                <!-- 4 Interlocking Glass Torus Quads -->
+                <g class="crystal-rotating-group">
+                  <path d="M 120 40 C 160 40, 195 75, 195 115 L 155 115 C 155 95, 140 80, 120 80 Z" fill="url(#crystalShine1)" stroke="rgba(255,255,255,0.4)" stroke-width="0.8"/>
+                  <path d="M 195 120 C 195 160, 160 195, 120 195 L 120 155 C 140 155, 155 140, 155 120 Z" fill="url(#crystalShine2)" stroke="rgba(255,255,255,0.4)" stroke-width="0.8"/>
+                  <path d="M 120 200 C 80 200, 45 165, 45 125 L 85 125 C 85 145, 100 160, 120 160 Z" fill="url(#crystalShine1)" stroke="rgba(255,255,255,0.4)" stroke-width="0.8"/>
+                  <path d="M 45 120 C 45 80, 80 45, 120 45 L 120 85 C 100 85, 85 100, 85 120 Z" fill="url(#crystalShine2)" stroke="rgba(255,255,255,0.4)" stroke-width="0.8"/>
+                </g>
+              </svg>
+            </div>
+            <div class="bento-tile-bottom">
+              <h3 class="bento-caption">Refractive precision.</h3>
+            </div>
+          </div>
+
+          <!-- Tile 6: Bottom Right Flowlist / Staggered Activity Event Stream -->
+          <div class="bento-tile bento-tile--flowlist reveal" style="--i: 5">
+            <div class="bento-tile-top">
+              <span class="bento-kicker bicker--light">FLOWLIST / HARDWARE EVENT STREAM</span>
+              <span class="live-event-badge">LIVE 60FPS</span>
+            </div>
+
+            <!-- ReactVibe Flowlist Animated Event Feed -->
+            <div class="flowlist-stream" aria-hidden="true">
+              <div class="flowlist-item">
+                <span class="fl-time">14:26:01</span>
+                <span class="fl-tag fl-tag--green">CALIBRATED</span>
+                <span class="fl-text">Magnetic Hall zero-drift bias check passed (0.01% drift)</span>
+              </div>
+              <div class="flowlist-item fl-active">
+                <span class="fl-time">14:26:02</span>
+                <span class="fl-tag fl-tag--orange">POLLING</span>
+                <span class="fl-text">Report rate sustained at 1000 Hz / 1.00 ms packet interval</span>
+              </div>
+              <div class="flowlist-item">
+                <span class="fl-time">14:26:03</span>
+                <span class="fl-tag fl-tag--red">HAPTICS</span>
+                <span class="fl-text">Dual voice-coil resonant frequency locked at 165 Hz</span>
+              </div>
+            </div>
+
+            <div class="bento-tile-bottom bento-tile-bottom--overlay">
+              <h3 class="bento-caption">Continuous telemetry stream.</h3>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         SECTION 05 — COLORWAYS
+         ==================================================== -->
+    <section class="section" id="colorways">
+
+      <div class="section-inner">
+        <div class="content-col">
+          <p class="section-label reveal">( 05 — FINISH )</p>
+          <h2 class="section-title reveal" style="--i: 1">Three finishes.<br>Zero compromise.</h2>
+          <p class="section-copy reveal" style="--i: 2">
+            The same hardware, three distinct temperaments. Select a finish to preview
+            it on the model.
+          </p>
+
+          <div class="swatch-row reveal" style="--i: 3" role="group" aria-label="Controller colorway">
+            <button type="button" class="swatch is-active" data-colorway="obsidian" aria-pressed="true">
+              <span class="swatch-dot" style="--swatch: #101319"></span>
+              <span class="swatch-name">Obsidian</span>
+            </button>
+            <button type="button" class="swatch" data-colorway="ember" aria-pressed="false">
+              <span class="swatch-dot" style="--swatch: #3a160b"></span>
+              <span class="swatch-name">Ember</span>
+            </button>
+            <button type="button" class="swatch" data-colorway="glacier" aria-pressed="false">
+              <span class="swatch-dot" style="--swatch: #c8d2e0"></span>
+              <span class="swatch-name">Glacier</span>
+            </button>
+          </div>
+
+          <p class="colorway-desc reveal" style="--i: 4" id="colorway-desc">
+            Obsidian — matte carbon shell with warm ember lighting.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         SECTION 06 — HARDWARE PRICING & EDITIONS
+         ==================================================== -->
+    <section class="section section--pricing" id="buy">
+      <div class="pricing-container">
+
+        <!-- Top Header & Toggle Row -->
+        <div class="pricing-header">
+          <div class="pricing-title-col">
+            <div class="pricing-index-tag reveal">
+              <span class="pricing-dot"></span>
+              <span class="pricing-index-text">06 / EDITIONS</span>
+              <span class="pricing-index-accent">価格</span>
+            </div>
+            <h2 class="pricing-heading reveal" style="--i: 1">
+              Engineered to win.<br>Built to last.
+            </h2>
+            <p class="pricing-subtext reveal" style="--i: 2">
+              Select your competitive loadout. Every tier includes contactless Hall-effect gimbals and full onboard remap memory.
+            </p>
+          </div>
+
+          <!-- Early Adopter Launch Special Toggle -->
+          <div class="pricing-toggle-wrap reveal" style="--i: 2">
+            <label class="pricing-switch" for="pricing-discount-toggle">
+              <input type="checkbox" id="pricing-discount-toggle" class="pricing-switch-input" aria-label="Toggle 20% discount for founders run">
+              <span class="pricing-slider"></span>
+            </label>
+            <div class="pricing-toggle-meta">
+              <span class="pricing-toggle-title">Founders Batch Reserve</span>
+              <span class="pricing-toggle-discount">20% off launch production</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3-Column Plan Grid -->
+        <div class="pricing-grid">
+
+          <!-- Plan 1: Core -->
+          <div class="pricing-card pricing-card--standard reveal" style="--i: 2">
+            <div class="pricing-card-header">
+              <h3 class="pricing-card-title">Core</h3>
+              <p class="pricing-card-sub">Pure competitive performance without compromise.</p>
+            </div>
+
+            <div class="pricing-card-price-block">
+              <div class="pricing-card-price-val" data-base="149" data-discount="119">$149</div>
+              <div class="pricing-card-price-sub">USD / CONTROLLER</div>
+            </div>
+
+            <div class="pricing-specs-list">
+              <div class="pricing-spec-item">
+                <span class="pricing-spec-kicker">GIMBALS</span>
+                <span class="pricing-spec-val">Hall-Effect Zero-Drift</span>
+              </div>
+              <div class="pricing-spec-item">
+                <span class="pricing-spec-kicker">POLLING RATE</span>
+                <span class="pricing-spec-val">1000 Hz / 1ms Wired</span>
+              </div>
+              <div class="pricing-spec-item">
+                <span class="pricing-spec-kicker">REAR BUTTONS</span>
+                <span class="pricing-spec-val">2 Tactile Remap Paddles</span>
+              </div>
+              <div class="pricing-spec-item">
+                <span class="pricing-spec-kicker">INCLUDED</span>
+                <span class="pricing-spec-val">2.5m Braided Cable</span>
+              </div>
+            </div>
+
+            <div class="pricing-card-footer">
+              <a href="#contact" class="pricing-btn" aria-label="Order Core Edition">
+                <span class="pricing-btn-label">PRE-ORDER CORE</span>
+                <span class="pricing-btn-icon">↗</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Plan 2: Pro Signature (Featured Card) -->
+          <div class="pricing-card pricing-card--featured reveal" style="--i: 3">
+            <!-- Architectural Geometric Monolith Sculpture (matching The Studio & Vision aesthetic) -->
+            <div class="pricing-featured-emblem" aria-hidden="true">
+              <svg viewBox="0 0 440 540" fill="none" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                  <!-- Deep metallic charcoal with subtle ambient red-orange rim bounce -->
+                  <linearGradient id="sculptTopGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#2a110a" stop-opacity="0.95" />
+                    <stop offset="35%" stop-color="#150805" stop-opacity="0.92" />
+                    <stop offset="85%" stop-color="#0a0302" stop-opacity="0.98" />
+                  </linearGradient>
+                  <linearGradient id="sculptBotGrad" x1="100%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#3d150b" stop-opacity="0.95" />
+                    <stop offset="45%" stop-color="#180703" stop-opacity="0.94" />
+                    <stop offset="100%" stop-color="#070201" stop-opacity="0.98" />
+                  </linearGradient>
+                  <linearGradient id="sculptRimGlow" x1="0%" y1="0%" x2="100%" y2="30%">
+                    <stop offset="0%" stop-color="#ffb185" stop-opacity="0.85" />
+                    <stop offset="30%" stop-color="#ff6b1a" stop-opacity="0.65" />
+                    <stop offset="70%" stop-color="#c43814" stop-opacity="0.35" />
+                    <stop offset="100%" stop-color="#ff6b1a" stop-opacity="0.05" />
+                  </linearGradient>
+                  <linearGradient id="sculptInnerCut" x1="0%" y1="50%" x2="100%" y2="50%">
+                    <stop offset="0%" stop-color="#050201" stop-opacity="0.98" />
+                    <stop offset="100%" stop-color="#220b06" stop-opacity="0.85" />
+                  </linearGradient>
+                  <radialGradient id="sculptBackGlow" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#ff843d" stop-opacity="0.30" />
+                    <stop offset="100%" stop-color="#ff6b1a" stop-opacity="0" />
+                  </radialGradient>
+                </defs>
+
+                <!-- Atmospheric Orange Glow behind sculpture -->
+                <ellipse cx="280" cy="280" rx="180" ry="200" fill="url(#sculptBackGlow)" />
+
+                <!-- Upper Architectural Segment (Precision Monolith Wing) -->
+                <path d="M 160 50 
+                         C 290 50, 390 145, 410 245 
+                         L 300 245 
+                         C 290 190, 235 140, 160 140 
+                         Z" 
+                      fill="url(#sculptTopGrad)" 
+                      stroke="url(#sculptRimGlow)" 
+                      stroke-width="1.8" />
+
+                <!-- Upper Segment Inner Recessed Facet with Crimson-Orange Edge -->
+                <path d="M 160 140 
+                         C 235 140, 290 190, 300 245 
+                         L 210 245 
+                         C 200 215, 180 195, 160 195 
+                         Z" 
+                      fill="url(#sculptInnerCut)" 
+                      stroke="url(#sculptRimGlow)" 
+                      stroke-width="1" />
+
+                <!-- Lower Inverted Architectural Segment (Mirrored / Clockwise Tension) -->
+                <path d="M 110 265 
+                         C 240 265, 340 360, 360 490 
+                         L 250 490 
+                         C 240 420, 185 355, 110 355 
+                         Z" 
+                      fill="url(#sculptBotGrad)" 
+                      stroke="url(#sculptRimGlow)" 
+                      stroke-width="1.8" />
+
+                <!-- Lower Segment Inner Recessed Facet -->
+                <path d="M 110 355 
+                         C 185 355, 240 420, 250 490 
+                         L 170 490 
+                         C 160 450, 135 410, 110 410 
+                         Z" 
+                      fill="url(#sculptInnerCut)" 
+                      stroke="url(#sculptRimGlow)" 
+                      stroke-width="1" />
+
+                <!-- Fine Precision Alignment Tick Marks / Technical Accents -->
+                <line x1="410" y1="245" x2="430" y2="245" stroke="#ffb185" stroke-width="1.5" opacity="0.75" />
+                <line x1="360" y1="490" x2="380" y2="490" stroke="#ffb185" stroke-width="1.5" opacity="0.75" />
+                <circle cx="420" cy="245" r="2.5" fill="#ffffff" />
+                <circle cx="370" cy="490" r="2.5" fill="#ffffff" />
+              </svg>
+            </div>
+
+            <div class="pricing-card-header">
+              <h3 class="pricing-card-title">Nexus Pro</h3>
+              <p class="pricing-card-sub">The flagship esports weapon for tournament athletes.</p>
+            </div>
+
+            <div class="pricing-card-price-block">
+              <div class="pricing-card-price-val" data-base="199" data-discount="159">$199</div>
+              <div class="pricing-card-price-sub">USD / COMPLETE KIT</div>
+            </div>
+
+            <div class="pricing-specs-list">
+              <div class="pricing-spec-item">
+                <span class="pricing-spec-kicker">WIRELESS</span>
+                <span class="pricing-spec-val">1000Hz 2.4G + BT 5.3</span>
+              </div>
+              <div class="pricing-spec-item">
+                <span class="pricing-spec-kicker">TRIGGERS</span>
+                <span class="pricing-spec-val">Microswitch Hair Stops</span>
+              </div>
+              <div class="pricing-spec-item">
+                <span class="pricing-spec-kicker">REAR BUTTONS</span>
+                <span class="pricing-spec-val">4 Quad Mechanical Paddles</span>
+              </div>
+              <div class="pricing-spec-item">
+                <span class="pricing-spec-kicker">ACCESSORIES</span>
+                <span class="pricing-spec-val">Hard Case + 3 Cap Sets</span>
+              </div>
+            </div>
+
+            <div class="pricing-card-footer">
+              <a href="#contact" class="pricing-btn pricing-btn--featured" aria-label="Pre-order Nexus Pro Edition">
+                <span class="pricing-btn-label">PRE-ORDER NEXUS PRO</span>
+                <span class="pricing-btn-icon">↗</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Plan 3: Custom Founders Edition -->
+          <div class="pricing-card pricing-card--standard reveal" style="--i: 4">
+            <div class="pricing-card-header">
+              <h3 class="pricing-card-title">Founders Custom</h3>
+              <p class="pricing-card-sub">Serialized batch edition with custom laser engraving &amp; tuned tension.</p>
+            </div>
+
+            <div class="pricing-card-price-block">
+              <div class="pricing-card-price-val" data-base="249" data-discount="199">$249</div>
+              <div class="pricing-card-price-sub">LIMITED TO 500 UNITS</div>
+            </div>
+
+            <div class="pricing-specs-list">
+              <div class="pricing-spec-item">
+                <span class="pricing-spec-kicker">SERIAL NUMBER</span>
+                <span class="pricing-spec-val">Laser Engraved 001–500</span>
+              </div>
+              <div class="pricing-spec-item">
+                <span class="pricing-spec-kicker">TENSION TUNING</span>
+                <span class="pricing-spec-val">Custom 45g/65g/85g Slopes</span>
+              </div>
+              <div class="pricing-spec-item">
+                <span class="pricing-spec-kicker">FINISH</span>
+                <span class="pricing-spec-val">Forged Carbon &amp; Ember Gold</span>
+              </div>
+              <div class="pricing-spec-item">
+                <span class="pricing-spec-kicker">WARRANTY</span>
+                <span class="pricing-spec-val">3-Year Priority Lifetime</span>
+              </div>
+            </div>
+
+            <div class="pricing-card-footer">
+              <a href="#contact" class="pricing-btn" aria-label="Reserve Founders Custom Edition">
+                <span class="pricing-btn-label">RESERVE FOUNDERS</span>
+                <span class="pricing-btn-icon">↗</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         SECTION 07 — PLATFORM / ECOSYSTEM CAROUSEL
+         ==================================================== -->
+    <section class="section section--platform" id="platform">
+      <div class="platform-container">
+        <!-- Header -->
+        <div class="platform-header reveal">
+          <p class="section-label">( 07 — PLATFORM )</p>
+          <div class="platform-header-row">
+            <div>
+              <h2 class="section-title">A full hardware platform,<br>not just a controller.</h2>
+              <p class="section-copy">Configure, calibrate, manage profiles, and dominate across PC, console, and mobile.</p>
+            </div>
+            <!-- Navigation controls -->
+            <div class="platform-nav-arrows">
+              <button type="button" class="platform-arrow-btn" id="platform-prev" aria-label="Previous card">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+              </button>
+              <button type="button" class="platform-arrow-btn" id="platform-next" aria-label="Next card">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Horizontal Scroll Cards Track -->
+        <div class="platform-carousel-wrap">
+          <div class="platform-track" id="platform-track">
+
+            <!-- Card 1: Architecture -->
+            <div class="platform-card reveal" style="--i: 1" tabindex="0">
+              <div class="card-icon-wrap">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect width="18" height="18" x="3" y="3" rx="4"/>
+                  <path d="M3 9h18M9 21V9"/>
+                </svg>
+              </div>
+              <div class="card-content">
+                <h3 class="card-title">Architecture</h3>
+                <p class="card-desc">Unibody exoskeleton with internal honeycomb bracing for zero chassis flex.</p>
+              </div>
+            </div>
+
+            <!-- Card 2: Profiles & CMS -->
+            <div class="platform-card reveal" style="--i: 2" tabindex="0">
+              <div class="card-icon-wrap">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                  <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                  <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/>
+                </svg>
+              </div>
+              <div class="card-content">
+                <h3 class="card-title">Profiles</h3>
+                <p class="card-desc">Store up to 4 onboard hardware profiles. Switch remaps without software.</p>
+              </div>
+            </div>
+
+            <!-- Card 3: Responsive / Cross-Platform -->
+            <div class="platform-card reveal" style="--i: 3" tabindex="0">
+              <div class="card-icon-wrap">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect width="14" height="20" x="5" y="2" rx="2" ry="2"/>
+                  <path d="M12 18h.01"/>
+                </svg>
+              </div>
+              <div class="card-content">
+                <h3 class="card-title">Responsive</h3>
+                <p class="card-desc">Engineered for desktop PC, consoles, tablet, and mobile with sub-millisecond response.</p>
+              </div>
+            </div>
+
+            <!-- Card 4: Calibration -->
+            <div class="platform-card reveal" style="--i: 4" tabindex="0">
+              <div class="card-icon-wrap">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8"/>
+                  <path d="m21 21-4.3-4.3"/>
+                </svg>
+              </div>
+              <div class="card-content">
+                <h3 class="card-title">Calibration</h3>
+                <p class="card-desc">Configure anti-deadzone circles, dynamic trigger tension, and sensitivity slopes.</p>
+              </div>
+            </div>
+
+            <!-- Card 5: Telemetry -->
+            <div class="platform-card reveal" style="--i: 5" tabindex="0">
+              <div class="card-icon-wrap">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 20V10"/>
+                  <path d="M18 20V4"/>
+                  <path d="M6 20v-4"/>
+                </svg>
+              </div>
+              <div class="card-content">
+                <h3 class="card-title">Telemetry</h3>
+                <p class="card-desc">Analyze real-time report rates, stick jitter, and polling stability in our lab suite.</p>
+              </div>
+            </div>
+
+            <!-- Card 6: Haptics -->
+            <div class="platform-card reveal" style="--i: 6" tabindex="0">
+              <div class="card-icon-wrap">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 12h2"/>
+                  <path d="M6 8v8"/>
+                  <path d="M10 4v16"/>
+                  <path d="M14 7v10"/>
+                  <path d="M18 9v6"/>
+                  <path d="M22 12h-2"/>
+                </svg>
+              </div>
+              <div class="card-content">
+                <h3 class="card-title">Acoustic Haptics</h3>
+                <p class="card-desc">Voice-coil haptic actuators delivering surgical rumble cues for competitive play.</p>
+              </div>
+            </div>
+
+            <!-- Card 7: Tournament Mode -->
+            <div class="platform-card reveal" style="--i: 7" tabindex="0">
+              <div class="card-icon-wrap">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+                  <path d="m15 5 4 4"/>
+                </svg>
+              </div>
+              <div class="card-content">
+                <h3 class="card-title">Tournament Mode</h3>
+                <p class="card-desc">Lockout system disables external wireless and macros to meet esport LAN rules.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         SECTION 08 — FAQ (MINIMAL SINGLE-CARD FLOATING STACK)
+         ==================================================== -->
+    <section class="section section--faq" id="faq">
+      <div class="faq-minimal-container">
+        
+        <!-- Minimal Center Header -->
+        <div class="faq-minimal-header">
+          <div class="faq-index-tag reveal">
+            <span class="faq-index-dot"></span>
+            <span class="faq-index-text">08 / SUPPORT</span>
+            <span class="faq-index-accent">疑問</span>
+          </div>
+          <h2 class="faq-minimal-title reveal" style="--i: 1">
+            Frequently asked questions.
+          </h2>
+          <p class="faq-minimal-subtitle reveal" style="--i: 2">
+            Clear answers on compatibility, magnetic Hall gimbals, latency, and warranty.
+          </p>
+        </div>
+
+        <!-- Floating Minimal Card Stack -->
+        <div class="faq-card-stack reveal" style="--i: 3" id="faq-card-stack">
+          
+          <!-- Item 01 -->
+          <div class="faq-stack-item is-open">
+            <button type="button" class="faq-stack-trigger" aria-expanded="true">
+              <span class="faq-stack-num">01</span>
+              <span class="faq-stack-question">Is Nexus Pro compatible with PlayStation 5, PC, and Steam Deck?</span>
+              <span class="faq-stack-icon" aria-hidden="true"></span>
+            </button>
+            <div class="faq-stack-panel">
+              <div class="faq-stack-inner">
+                <p>Yes. Nexus Pro pairs natively with PS5 over low-latency Bluetooth, and connects to PC, Steam Deck, iOS, and Android via 1000Hz 2.4 GHz wireless or USB-C. All button mappings and deadzone profiles are stored directly on the hardware.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 02 -->
+          <div class="faq-stack-item">
+            <button type="button" class="faq-stack-trigger" aria-expanded="false">
+              <span class="faq-stack-num">02</span>
+              <span class="faq-stack-question">How do Hall-effect magnetic gimbals eliminate stick drift?</span>
+              <span class="faq-stack-icon" aria-hidden="true"></span>
+            </button>
+            <div class="faq-stack-panel">
+              <div class="faq-stack-inner">
+                <p>Standard controllers use carbon resistive tracks with physical wipers that wear out and cause drift. Nexus Pro uses contactless electromagnetic Hall-effect sensors that track magnetic flux with zero physical friction, auto-calibrating at every startup for lifetime precision.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 03 -->
+          <div class="faq-stack-item">
+            <button type="button" class="faq-stack-trigger" aria-expanded="false">
+              <span class="faq-stack-num">03</span>
+              <span class="faq-stack-question">What is the polling rate, and is there wireless latency?</span>
+              <span class="faq-stack-icon" aria-hidden="true"></span>
+            </button>
+            <div class="faq-stack-panel">
+              <div class="faq-stack-inner">
+                <p>Nexus Pro delivers a true 1000 Hz polling rate (1ms report interval) over both USB-C wired connection and our included HyperLink 2.4 GHz USB dongle, with packet transmission jitter held below 0.1ms.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 04 -->
+          <div class="faq-stack-item">
+            <button type="button" class="faq-stack-trigger" aria-expanded="false">
+              <span class="faq-stack-num">04</span>
+              <span class="faq-stack-question">What comes inside the Founders Edition package?</span>
+              <span class="faq-stack-icon" aria-hidden="true"></span>
+            </button>
+            <div class="faq-stack-panel">
+              <div class="faq-stack-inner">
+                <p>Each unit ships with the serialized controller, a hard-shell ballistic travel case, 3 swappable stick cap pairs (concave, domed, precision high-rise), a 2.5m braided USB-C paracord, 2.4 GHz USB dongle, calibration card, and 2-year warranty.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 05 -->
+          <div class="faq-stack-item">
+            <button type="button" class="faq-stack-trigger" aria-expanded="false">
+              <span class="faq-stack-num">05</span>
+              <span class="faq-stack-question">Can I return the controller if it doesn't suit my grip?</span>
+              <span class="faq-stack-icon" aria-hidden="true"></span>
+            </button>
+            <div class="faq-stack-panel">
+              <div class="faq-stack-inner">
+                <p>Yes. Every order comes with an unconditional 30-day fit guarantee. Play with it, test the ergonomic ergonomics in-game, and if it doesn't feel right, return it for a complete 100% refund.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Minimal Bottom Contact Helper -->
+        <div class="faq-minimal-footer reveal" style="--i: 4">
+          <span>Still have a question?</span>
+          <a href="mailto:support@nexus.io" class="faq-minimal-mail">
+            <span>Contact engineering</span>
+            <span class="faq-minimal-arrow">→</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======================================================
+       SUNDOWN-INSPIRED CINEMATIC BRAND FOOTER
+       ====================================================== -->
+  <footer class="sundown-footer" id="footer">
+    <!-- Animated Molten Organic Orange Glow Mesh -->
+    <div class="sundown-glow-wrap" aria-hidden="true">
+      <div class="sundown-glow sundown-glow-1"></div>
+      <div class="sundown-glow sundown-glow-2"></div>
+      <div class="sundown-glow sundown-glow-3"></div>
+      <div class="sundown-glow-noise"></div>
+    </div>
+    <!-- Pointer-driven light pool; decorative only. -->
+    <div class="sundown-cursor-glow" id="sundown-cursor-glow" aria-hidden="true"></div>
+
+    <div class="sundown-inner">
+      <!-- Upper Section: Vertical Nav Links (Left) + Newsletter (Right) -->
+      <div class="sundown-top-row">
+        <nav class="sundown-nav" aria-label="Footer Navigation">
+          <a href="#overview" class="sundown-nav-link">Hardware</a>
+          <a href="#specs" class="sundown-nav-link">Specs</a>
+          <a href="#buy" class="sundown-nav-link">Pre-Order</a>
+        </nav>
+
+        <div class="sundown-newsletter">
+          <p class="sundown-newsletter-text">
+            Get firmware updates, calibration software betas, and limited batch drops straight to your inbox.
+          </p>
+          <form class="sundown-form" id="sundown-form">
+            <div class="sundown-input-group">
+              <input type="email" class="sundown-email-input" placeholder="Enter your email" required autocomplete="email" />
+              <button type="submit" class="sundown-submit-btn" aria-label="Subscribe">
+                <svg width="22" height="14" viewBox="0 0 22 14" fill="none">
+                  <path d="M1 7H21M21 7L15 1M21 7L15 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+            <div class="sundown-form-status" id="sundown-status" aria-live="polite"></div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Massive Brand Hero Title -->
+      <div class="sundown-hero-wrap">
+        <h2 class="sundown-hero-title">Nexus</h2>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="sundown-bottom-bar">
+        <div class="sundown-bottom-left">
+          <span>Copyright © Nexus Hardware Inc. All rights reserved.</span>
+        </div>
+
+        <div class="sundown-bottom-center">
+          <span class="sundown-pill-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+            Tokyo • Austin • Berlin
+          </span>
+          <span class="sundown-pill-item sundown-clock" id="footer-live-clock">07:23:14 AM</span>
+        </div>
+
+        <div class="sundown-bottom-right">
+          <a href="https://discord.gg" target="_blank" rel="noopener">Discord</a>
+          <a href="https://twitter.com" target="_blank" rel="noopener">Twitter / X</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="lenis.min.js"></script>
+  <script src="gsap.min.js"></script>
+  <script src="ScrollTrigger.min.js"></script>
+  <script type="module" src="main.js?v=45.0"></script>
+</body>
+</html>
